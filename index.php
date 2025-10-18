@@ -11,7 +11,7 @@ include 'includes/header.php';
     <!-- Header -->
     <header class="header">
         <div class="container">
-            <h1>Smarty Pants Math 3.43</h1>
+            <h1>Smarty Pants Math 10.18</h1>
             <p>Making math fun and engaging for K-6 students with interactive quizzes and instant feedback!</p>
         </div>
     </header>
