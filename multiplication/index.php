@@ -82,7 +82,7 @@ include '../includes/header.php';
                     </div>
                     <div class="streak-counter" id="streakCounter" style="display: none;">
                         <span class="streak-icon">🔥</span>
-                        <span class="streak-text"><span id="streakNumber">0</span> in a row!</span>
+                        <span class="streak-text"><span id="streakNumber">0</span> correct!</span>
                     </div>
                     <div class="quiz-timer">
                         <span class="timer-icon">⏱️</span>
@@ -266,7 +266,7 @@ include '../includes/header.php';
         let currentLevel = '<?php echo $current_level; ?>';
     </script>
     
-    <script src="/assets/js/quiz-all-in-one.js"></script>
+    <script src="/assets/js/quiz-all-in-one.js?v=2"></script>
 
 <?php
 // Include footer

@@ -14,7 +14,7 @@ class QuestionGenerator {
      * @param int $max_b Maximum value for second number
      * @return array Question data with text, correct answer, and options
      */
-    public static function generateMultiplication($min_a, $max_a, $min_b, $max_b) {
+    public static function generateMultiplication($min_a, $max_a, $min_b, $max_b, $difficulty = 'medium') {
         // Generate two random numbers within range
         $num1 = rand($min_a, $max_a);
         $num2 = rand($min_b, $max_b);
@@ -25,8 +25,8 @@ class QuestionGenerator {
         // Create question text
         $question_text = "$num1 × $num2 = ?";
         
-        // Generate wrong answers
-        $options = self::generateOptions($correct, $num1, $num2, 'multiplication');
+        // Generate wrong answers (pass difficulty level)
+        $options = self::generateOptions($correct, $num1, $num2, 'multiplication', $difficulty);
         
         return [
             'question' => $question_text,
@@ -43,48 +43,101 @@ class QuestionGenerator {
      * @param int $num1 First number in equation
      * @param int $num2 Second number in equation
      * @param string $operation Type of operation
+     * @param string $difficulty Difficulty level (easy, medium, hard)
      * @return array Shuffled array of 4 options (1 correct, 3 wrong)
      */
-    private static function generateOptions($correct, $num1, $num2, $operation = 'multiplication') {
+    private static function generateOptions($correct, $num1, $num2, $operation = 'multiplication', $difficulty = 'medium') {
         $wrong_answers = [];
         
-        // Strategy: Generate common mistakes and plausible alternatives
-        switch($operation) {
-            case 'multiplication':
-                // Common mistakes for multiplication
-                $potential_wrongs = [
-                    $correct + $num1,           // Off by one multiplicand
-                    $correct - $num2,           // Off by one multiplicand
-                    $correct + $num2,           // Close but not quite
-                    $num1 + $num2,              // Addition instead of multiplication
-                    ($num1 - 1) * $num2,        // Off by one on first number
-                    $num1 * ($num2 - 1),        // Off by one on second number
-                    ($num1 + 1) * $num2,        // Off by one on first number
-                    $num1 * ($num2 + 1),        // Off by one on second number
-                ];
-                break;
-            default:
-                $potential_wrongs = [];
-        }
-        
-        // Remove duplicates and the correct answer
-        $potential_wrongs = array_unique($potential_wrongs);
-        $potential_wrongs = array_filter($potential_wrongs, function($val) use ($correct) {
-            return $val != $correct && $val > 0; // Keep positive numbers only
-        });
-        
-        // If we don't have enough options, generate random nearby numbers
-        while (count($potential_wrongs) < 3) {
-            if ($correct < 10) {
-                $random = $correct + rand(-3, 3);
-            } elseif ($correct < 50) {
-                $random = $correct + rand(-8, 8);
-            } else {
-                $random = $correct + rand(-15, 15);
+        // Use different strategies based on difficulty
+        if ($difficulty === 'hard') {
+            // HARD MODE: Very close numbers - much harder!
+            switch($operation) {
+                case 'multiplication':
+                    // Generate answers that are very close to correct answer
+                    $potential_wrongs = [
+                        $correct - 1,    // Just one less
+                        $correct + 1,    // Just one more
+                        $correct - 2,    // Two less
+                        $correct + 2,    // Two more
+                        $correct - 3,    // Three less
+                        $correct + 3,    // Three more
+                        $correct - 4,    // Four less
+                        $correct + 4,    // Four more
+                    ];
+                    
+                    // Also add some answers from adjacent multiplication facts
+                    if ($num2 > 1) {
+                        $potential_wrongs[] = $num1 * ($num2 - 1);  // Previous multiple
+                    }
+                    if ($num2 < 12) {
+                        $potential_wrongs[] = $num1 * ($num2 + 1);  // Next multiple
+                    }
+                    if ($num1 > 1) {
+                        $potential_wrongs[] = ($num1 - 1) * $num2;  // Previous multiple
+                    }
+                    if ($num1 < 12) {
+                        $potential_wrongs[] = ($num1 + 1) * $num2;  // Next multiple
+                    }
+                    break;
+                default:
+                    $potential_wrongs = [];
             }
             
-            if ($random > 0 && $random != $correct && !in_array($random, $potential_wrongs)) {
-                $potential_wrongs[] = $random;
+            // Remove duplicates and the correct answer
+            $potential_wrongs = array_unique($potential_wrongs);
+            $potential_wrongs = array_filter($potential_wrongs, function($val) use ($correct) {
+                return $val != $correct && $val > 0;
+            });
+            
+            // If we don't have enough options, generate more close numbers
+            while (count($potential_wrongs) < 3) {
+                $offset = rand(1, 6);
+                $random = rand(0, 1) ? $correct + $offset : $correct - $offset;
+                
+                if ($random > 0 && $random != $correct && !in_array($random, $potential_wrongs)) {
+                    $potential_wrongs[] = $random;
+                }
+            }
+        } else {
+            // EASY & MEDIUM MODE: More spread out, easier to eliminate
+            switch($operation) {
+                case 'multiplication':
+                    // Common mistakes for multiplication (easier)
+                    $potential_wrongs = [
+                        $correct + $num1,           // Off by one multiplicand
+                        $correct - $num2,           // Off by one multiplicand
+                        $correct + $num2,           // Close but not quite
+                        $num1 + $num2,              // Addition instead of multiplication
+                        ($num1 - 1) * $num2,        // Off by one on first number
+                        $num1 * ($num2 - 1),        // Off by one on second number
+                        ($num1 + 1) * $num2,        // Off by one on first number
+                        $num1 * ($num2 + 1),        // Off by one on second number
+                    ];
+                    break;
+                default:
+                    $potential_wrongs = [];
+            }
+            
+            // Remove duplicates and the correct answer
+            $potential_wrongs = array_unique($potential_wrongs);
+            $potential_wrongs = array_filter($potential_wrongs, function($val) use ($correct) {
+                return $val != $correct && $val > 0;
+            });
+            
+            // If we don't have enough options, generate random nearby numbers (more spread)
+            while (count($potential_wrongs) < 3) {
+                if ($correct < 10) {
+                    $random = $correct + rand(-3, 3);
+                } elseif ($correct < 50) {
+                    $random = $correct + rand(-8, 8);
+                } else {
+                    $random = $correct + rand(-15, 15);
+                }
+                
+                if ($random > 0 && $random != $correct && !in_array($random, $potential_wrongs)) {
+                    $potential_wrongs[] = $random;
+                }
             }
         }
         
@@ -118,11 +171,13 @@ class QuestionGenerator {
             
             switch($operation) {
                 case 'multiplication':
+                    $difficulty = isset($config['difficulty']) ? $config['difficulty'] : 'medium';
                     $question = self::generateMultiplication(
                         $config['min_multiplier'],
                         $config['max_multiplier'],
                         $config['min_multiplicand'],
-                        $config['max_multiplicand']
+                        $config['max_multiplicand'],
+                        $difficulty
                     );
                     
                     // Create a unique key for this question (handles commutative property)

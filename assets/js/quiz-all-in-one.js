@@ -131,8 +131,8 @@ function updateStreakCounter(isCorrect) {
     if (isCorrect) {
         currentStreak++;
         
-        // Show streak counter if 2 or more correct in a row
-        if (currentStreak >= 2) {
+        // Show streak counter after 3 or more correct in a row
+        if (currentStreak >= 3) {
             if (streakCounter) {
                 streakCounter.style.display = 'flex';
                 if (streakNumber) {
@@ -427,90 +427,6 @@ function closeResults() {
 
 
 
-/**
- * Display answer option buttons
- * @param {Array} options - Array of answer options
- * @param {number} correctAnswer - The correct answer
- */
-function displayAnswerOptions(options, correctAnswer) {
-    const answerOptions = document.getElementById('answerOptions');
-    if (!answerOptions) return;
-    
-    // Clear existing options
-    answerOptions.innerHTML = '';
-    
-    // Create button for each option (with keyboard shortcuts)
-    options.forEach((option, index) => {
-        const button = document.createElement('button');
-        button.className = 'answer-btn';
-        button.onclick = () => selectAnswer(option, correctAnswer);
-        
-        // Add answer text
-        const answerText = document.createTextNode(option);
-        button.appendChild(answerText);
-        
-        // Add keyboard hint badge
-        const keyHint = document.createElement('span');
-        keyHint.className = 'key-hint';
-        keyHint.textContent = index + 1;
-        button.appendChild(keyHint);
-        
-        answerOptions.appendChild(button);
-    });
-}
-
-/**
- * Handle answer selection
- * @param {number} answer - Selected answer
- * @param {number} correctAnswer - The correct answer
- */
-function selectAnswer(answer, correctAnswer) {
-    if (!isQuizActive) return;
-    
-    // Prevent multiple clicks - disable all buttons immediately
-    const buttons = document.querySelectorAll('.answer-btn');
-    buttons.forEach(btn => {
-        btn.disabled = true;
-        btn.style.cursor = 'not-allowed';
-        btn.style.opacity = '0.6';
-    });
-    
-    selectedAnswer = answer;
-    const isCorrect = answer === correctAnswer;
-    
-    // Update buttons to show selection
-    buttons.forEach(btn => {
-        btn.classList.remove('selected');
-        if (parseInt(btn.textContent) === answer) {
-            btn.classList.add('selected');
-            btn.style.opacity = '1'; // Keep selected button fully visible
-        }
-    });
-    
-    // Record answer
-    if (isCorrect) {
-        correctCount++;
-    } else {
-        const currentQuestion = quizData[currentQuestionIndex];
-        wrongAnswers.push({
-            question: currentQuestion.question,
-            yourAnswer: answer,
-            correctAnswer: correctAnswer
-        });
-    }
-    
-    // Auto-advance to next question after short delay
-    setTimeout(() => {
-        currentQuestionIndex++;
-        saveProgress();
-        
-        if (currentQuestionIndex < quizData.length) {
-            displayQuestion();
-        } else {
-            showResults();
-        }
-    }, 600);
-}
 
 /**
  * Save progress to session
