@@ -12,12 +12,31 @@ let selectedAnswer = null;
 let startTime = null;
 let isQuizActive = false;
 let timerInterval = null;
+let currentStreak = 0; // Track consecutive correct answers
 
 /**
  * Initialize quiz on page load
  */
 document.addEventListener('DOMContentLoaded', function() {
     loadQuizData();
+    
+    // Keyboard support for answer selection
+    document.addEventListener('keydown', function(e) {
+        if (!isQuizActive) return;
+        
+        const key = e.key;
+        const answerOptions = document.getElementById('answerOptions');
+        
+        // Check if key is 1, 2, 3, or 4
+        if (['1', '2', '3', '4'].includes(key) && answerOptions) {
+            const buttons = answerOptions.querySelectorAll('.answer-btn');
+            const buttonIndex = parseInt(key) - 1;
+            
+            if (buttons[buttonIndex] && !buttons[buttonIndex].disabled) {
+                buttons[buttonIndex].click();
+            }
+        }
+    });
 });
 
 /**
@@ -87,6 +106,50 @@ function updateQuestionCounter() {
 }
 
 /**
+ * Update progress bar
+ */
+function updateProgressBar() {
+    const progress = ((currentQuestionIndex + 1) / QUESTIONS_PER_QUIZ) * 100;
+    const progressBar = document.getElementById('progressBar');
+    const progressText = document.getElementById('progressText');
+    
+    if (progressBar) {
+        progressBar.style.width = progress + '%';
+    }
+    if (progressText) {
+        progressText.textContent = Math.round(progress) + '%';
+    }
+}
+
+/**
+ * Update streak counter
+ */
+function updateStreakCounter(isCorrect) {
+    const streakCounter = document.getElementById('streakCounter');
+    const streakNumber = document.getElementById('streakNumber');
+    
+    if (isCorrect) {
+        currentStreak++;
+        
+        // Show streak counter if 2 or more correct in a row
+        if (currentStreak >= 2) {
+            if (streakCounter) {
+                streakCounter.style.display = 'flex';
+                if (streakNumber) {
+                    streakNumber.textContent = currentStreak;
+                }
+            }
+        }
+    } else {
+        // Reset streak on wrong answer
+        currentStreak = 0;
+        if (streakCounter) {
+            streakCounter.style.display = 'none';
+        }
+    }
+}
+
+/**
  * Display current question
  */
 function displayQuestion() {
@@ -99,6 +162,9 @@ function displayQuestion() {
     
     // Update question counter
     updateQuestionCounter();
+    
+    // Update progress bar
+    updateProgressBar();
     
     // Update question text
     const questionText = document.getElementById('questionText');
@@ -125,12 +191,22 @@ function displayAnswerOptions(options, correctAnswer) {
     // Clear existing options
     answerOptions.innerHTML = '';
     
-    // Create button for each option
-    options.forEach(option => {
+    // Create button for each option (with keyboard shortcuts)
+    options.forEach((option, index) => {
         const button = document.createElement('button');
         button.className = 'answer-btn';
-        button.textContent = option;
         button.onclick = () => selectAnswer(option, correctAnswer);
+        
+        // Add answer text
+        const answerText = document.createTextNode(option);
+        button.appendChild(answerText);
+        
+        // Add keyboard hint badge
+        const keyHint = document.createElement('span');
+        keyHint.className = 'key-hint';
+        keyHint.textContent = index + 1;
+        button.appendChild(keyHint);
+        
         answerOptions.appendChild(button);
     });
 }
@@ -162,6 +238,9 @@ function selectAnswer(answer, correctAnswer) {
             btn.style.opacity = '1'; // Keep selected button fully visible
         }
     });
+    
+    // Update streak counter (after isCorrect is defined)
+    updateStreakCounter(isCorrect);
     
     // Record answer
     if (isCorrect) {
@@ -360,12 +439,22 @@ function displayAnswerOptions(options, correctAnswer) {
     // Clear existing options
     answerOptions.innerHTML = '';
     
-    // Create button for each option
-    options.forEach(option => {
+    // Create button for each option (with keyboard shortcuts)
+    options.forEach((option, index) => {
         const button = document.createElement('button');
         button.className = 'answer-btn';
-        button.textContent = option;
         button.onclick = () => selectAnswer(option, correctAnswer);
+        
+        // Add answer text
+        const answerText = document.createTextNode(option);
+        button.appendChild(answerText);
+        
+        // Add keyboard hint badge
+        const keyHint = document.createElement('span');
+        keyHint.className = 'key-hint';
+        keyHint.textContent = index + 1;
+        button.appendChild(keyHint);
+        
         answerOptions.appendChild(button);
     });
 }

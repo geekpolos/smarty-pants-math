@@ -70,6 +70,35 @@
     letter-spacing: -0.5px;
 }
 
+/* Progress Bar */
+.progress-bar-container {
+    position: relative;
+    width: 100%;
+    height: 8px;
+    background: #e2e8f0;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+
+.progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+    transition: width 0.4s ease;
+    width: 0%;
+    border-radius: 10px;
+}
+
+.progress-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #4a5568;
+}
+
 /* Quiz Header with Timer and Question Counter */
 .quiz-header-info {
     display: flex;
@@ -80,6 +109,7 @@
     background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
     border-radius: 12px;
     border: 2px solid #e2e8f0;
+    gap: 10px;
 }
 
 .question-counter {
@@ -105,6 +135,45 @@
 .counter-numbers #currentQuestionNum {
     color: #667eea;
     font-size: 1.5rem;
+}
+
+/* Streak Counter */
+.streak-counter {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: linear-gradient(135deg, #fff5e6 0%, #ffe5b4 100%);
+    padding: 8px 16px;
+    border-radius: 20px;
+    border: 2px solid #ffa500;
+    animation: streakPulse 0.5s ease;
+}
+
+@keyframes streakPulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+.streak-icon {
+    font-size: 1.2rem;
+    animation: fireFlicker 1s infinite;
+}
+
+@keyframes fireFlicker {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+.streak-text {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #d97706;
+}
+
+.streak-text #streakNumber {
+    font-size: 1.1rem;
+    color: #ff6b00;
 }
 
 .quiz-timer {
@@ -170,7 +239,34 @@
     cursor: pointer;
     transition: all 0.2s ease;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    position: relative;
 }
+
+/* Keyboard hint badges */
+.key-hint {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.6;
+}
+
+/* Hide keyboard hints on mobile/tablet */
+@media (max-width: 1024px) {
+    .key-hint {
+        display: none;
+    }
+}
+
 
 .answer-btn:hover {
     background: #f7fafc;

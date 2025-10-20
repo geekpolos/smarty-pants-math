@@ -66,6 +66,12 @@ include '../includes/header.php';
                 <!-- Main H1 Title for SEO -->
                 <h1 class="quiz-main-title">Multiplication Quiz</h1>
                 
+                <!-- Progress Bar -->
+                <div class="progress-bar-container">
+                    <div class="progress-bar" id="progressBar"></div>
+                    <div class="progress-text" id="progressText">0%</div>
+                </div>
+                
                 <!-- Quiz Header with Timer and Progress -->
                 <div class="quiz-header-info">
                     <div class="question-counter">
@@ -73,6 +79,10 @@ include '../includes/header.php';
                         <span class="counter-numbers">
                             <span id="currentQuestionNum">1</span> of <?php echo QUESTIONS_PER_QUIZ; ?>
                         </span>
+                    </div>
+                    <div class="streak-counter" id="streakCounter" style="display: none;">
+                        <span class="streak-icon">🔥</span>
+                        <span class="streak-text"><span id="streakNumber">0</span> in a row!</span>
                     </div>
                     <div class="quiz-timer">
                         <span class="timer-icon">⏱️</span>
