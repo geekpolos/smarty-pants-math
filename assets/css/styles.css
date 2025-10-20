@@ -147,6 +147,26 @@ body {
     .grades-dropdown:hover .dropdown-content {
         display: none;
     }
+    
+    /* Mobile dropdown active state (when toggled by JavaScript) */
+    .grades-dropdown.active .dropdown-content {
+        display: block;
+        position: relative;
+        background: rgba(102, 126, 234, 0.05);
+        box-shadow: none;
+        border-radius: 8px;
+        margin-top: 8px;
+        padding: 8px 0;
+    }
+    
+    .grades-dropdown.active .dropdown-content .dropdown-link {
+        padding: 10px 20px;
+        border-radius: 4px;
+    }
+    
+    .grades-dropdown.active .dropdown-content .dropdown-link:hover {
+        background: rgba(102, 126, 234, 0.1);
+    }
 }
 
 .container {

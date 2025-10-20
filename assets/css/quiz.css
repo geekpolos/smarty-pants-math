@@ -44,8 +44,8 @@
 
 /* All-in-One Quiz Section */
 .quiz-all-in-one {
-    padding: 60px 20px;
-    max-width: 700px;
+    padding: 40px 20px;
+    max-width: 650px;
     margin: 0 auto;
 }
 
@@ -53,16 +53,16 @@
     background: white;
     border-radius: 20px;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
-    padding: 40px;
+    padding: 30px;
     width: 100%;
 }
 
 /* Main Quiz Title (H1) */
 .quiz-main-title {
-    font-size: 2.2rem;
+    font-size: 2rem;
     font-weight: 800;
-    text-align: center;
-    margin: 0 0 30px 0;
+    text-align: left;
+    margin: 0 0 20px 0;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -75,8 +75,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 25px;
-    padding: 15px 20px;
+    margin-bottom: 20px;
+    padding: 12px 18px;
     background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
     border-radius: 12px;
     border: 2px solid #e2e8f0;
@@ -135,9 +135,9 @@
     background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
     border: 3px solid #e2e8f0;
     border-radius: 15px;
-    padding: 40px 30px;
-    margin-bottom: 30px;
-    min-height: 300px;
+    padding: 35px 25px;
+    margin-bottom: 20px;
+    min-height: 280px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -145,26 +145,26 @@
 }
 
 .question-display {
-    font-size: 2.5rem;
+    font-size: 2.3rem;
     font-weight: 700;
     color: #2d3748;
     text-align: center;
-    margin-bottom: 40px;
+    margin-bottom: 30px;
 }
 
 /* Answer Options Grid */
 .answer-options {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 15px;
+    gap: 12px;
 }
 
 .answer-btn {
     background: white;
     border: 3px solid #cbd5e0;
     border-radius: 12px;
-    padding: 20px;
-    font-size: 1.5rem;
+    padding: 18px;
+    font-size: 1.4rem;
     font-weight: 600;
     color: #2d3748;
     cursor: pointer;

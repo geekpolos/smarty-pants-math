@@ -15,11 +15,44 @@ if (mobileToggle && navMenu) {
     });
 }
 
-// Smooth scrolling for anchor links
+// Mobile dropdown menu toggle
+document.querySelectorAll('.grades-dropdown > a').forEach(dropdownToggle => {
+    dropdownToggle.addEventListener('click', function(e) {
+        // Only handle on mobile (when hamburger menu is visible)
+        if (window.innerWidth <= 768) {
+            const href = this.getAttribute('href');
+            
+            // If it's a dropdown toggle (href is # or empty)
+            if (!href || href === '#') {
+                e.preventDefault();
+                const parentLi = this.parentElement;
+                
+                // Close other dropdowns
+                document.querySelectorAll('.grades-dropdown').forEach(dropdown => {
+                    if (dropdown !== parentLi) {
+                        dropdown.classList.remove('active');
+                    }
+                });
+                
+                // Toggle current dropdown
+                parentLi.classList.toggle('active');
+            }
+        }
+    });
+});
+
+// Smooth scrolling for anchor links (skip empty # or dropdown toggles)
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
+        const href = this.getAttribute('href');
+        
+        // Skip if href is just "#" or empty (dropdown toggles)
+        if (!href || href === '#' || href.length <= 1) {
+            return;
+        }
+        
         e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
+        const target = document.querySelector(href);
         if (target) {
             target.scrollIntoView({
                 behavior: 'smooth',
