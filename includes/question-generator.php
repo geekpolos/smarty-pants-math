@@ -109,22 +109,63 @@ class QuestionGenerator {
      */
     public static function generateQuestions($operation, $config, $count = 10) {
         $questions = [];
+        $used_pairs = []; // Track used number combinations
+        $max_attempts = $count * 10; // Prevent infinite loops
+        $attempts = 0;
         
-        for ($i = 0; $i < $count; $i++) {
+        while (count($questions) < $count && $attempts < $max_attempts) {
+            $attempts++;
+            
             switch($operation) {
                 case 'multiplication':
-                    $questions[] = self::generateMultiplication(
+                    $question = self::generateMultiplication(
                         $config['min_multiplier'],
                         $config['max_multiplier'],
                         $config['min_multiplicand'],
                         $config['max_multiplicand']
                     );
+                    
+                    // Create a unique key for this question (handles commutative property)
+                    // Both 3×4 and 4×3 are considered the same question
+                    $num1 = $question['num1'];
+                    $num2 = $question['num2'];
+                    $pair_key = min($num1, $num2) . 'x' . max($num1, $num2);
+                    
+                    // Only add if this combination hasn't been used
+                    if (!in_array($pair_key, $used_pairs)) {
+                        $questions[] = $question;
+                        $used_pairs[] = $pair_key;
+                    }
                     break;
+                    
                 // Future operations can be added here
                 default:
                     break;
             }
         }
+        
+        // If we couldn't generate enough unique questions (very small range),
+        // allow some duplicates but shuffle to make them less obvious
+        if (count($questions) < $count) {
+            // Generate more questions without the duplicate check
+            while (count($questions) < $count) {
+                switch($operation) {
+                    case 'multiplication':
+                        $questions[] = self::generateMultiplication(
+                            $config['min_multiplier'],
+                            $config['max_multiplier'],
+                            $config['min_multiplicand'],
+                            $config['max_multiplicand']
+                        );
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+        
+        // Shuffle to randomize order
+        shuffle($questions);
         
         return $questions;
     }

@@ -61,7 +61,7 @@
 .quiz-main-title {
     font-size: 2.2rem;
     font-weight: 800;
-    text-align: center;
+    text-align: left;
     margin: 0 0 30px 0;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     -webkit-background-clip: text;
