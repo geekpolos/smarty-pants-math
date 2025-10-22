@@ -29,29 +29,29 @@ if (isset($_GET['level']) && $_GET['level'] != $_SESSION['quiz_level'] ?? null) 
 elseif (!isset($_SESSION['quiz_active']) || !$_SESSION['quiz_active']) {
     $needs_new_questions = true;
 }
-// Case 3: Different operation (switching from addition to multiplication, etc.)
-elseif (!isset($_SESSION['quiz_operation']) || $_SESSION['quiz_operation'] != 'multiplication') {
+// Case 3: Different operation (switching from multiplication to addition, etc.)
+elseif (!isset($_SESSION['quiz_operation']) || $_SESSION['quiz_operation'] != 'addition') {
     $needs_new_questions = true;
 }
 
 // Generate new questions if needed
 if ($needs_new_questions) {
-    $questions = QuestionGenerator::generateQuestions('multiplication', $level_config, QUESTIONS_PER_QUIZ);
+    $questions = QuestionGenerator::generateQuestions('addition', $level_config, QUESTIONS_PER_QUIZ);
     $_SESSION['questions'] = $questions;
     $_SESSION['current_question'] = 0;
     $_SESSION['correct_count'] = 0;
     $_SESSION['wrong_answers'] = [];
     $_SESSION['quiz_active'] = true;
     $_SESSION['quiz_level'] = $current_level;
-    $_SESSION['quiz_operation'] = 'multiplication'; // Track which operation this is
+    $_SESSION['quiz_operation'] = 'addition'; // Track which operation this is
     $_SESSION['start_time'] = time();
 }
 
 // SEO Configuration
 $level_name = ucfirst($current_level);
-$page_title = "Multiplication Practice Quiz - {$level_name} Level | Smarty Pants Math";
-$page_description = "Practice multiplication with our interactive {$level_name} level quiz! Get instant feedback, track your progress, and master times tables. Perfect for students from kindergarten to 6th grade.";
-$current_page = 'multiplication';
+$page_title = "Addition Practice Quiz - {$level_name} Level | Smarty Pants Math";
+$page_description = "Practice addition with our interactive {$level_name} level quiz! Get instant feedback, track your progress, and master addition facts. Perfect for students from kindergarten to 6th grade.";
+$current_page = 'addition';
 $extra_css = ['/assets/css/quiz.css'];
 
 // Include header
@@ -70,7 +70,7 @@ include '../includes/header.php';
             <div class="quiz-main-container">
                 
                 <!-- Main H1 Title for SEO -->
-                <h1 class="quiz-main-title">Multiplication Quiz</h1>
+                <h1 class="quiz-main-title">Addition Quiz</h1>
                 
                 <!-- Progress Bar -->
                 <div class="progress-bar-container">
@@ -157,54 +157,62 @@ include '../includes/header.php';
                     </div>
                 </section>
 
-                <!-- Multiplication Tips Section -->
+                <!-- Addition Tips Section -->
                 <section class="info-section tips-section">
-                    <h2 class="section-heading">Multiplication Tips & Tricks</h2>
+                    <h2 class="section-heading">Addition Tips & Tricks</h2>
                     
                     <div class="tips-content">
                         <div class="tip-box">
-                            <h3>🔢 Start with the Easy Ones</h3>
-                            <p>Master multiplying by 1, 2, 5, and 10 first. These have simple patterns:</p>
+                            <h3>🔢 Start with Doubles</h3>
+                            <p>Master adding a number to itself first. These are the easiest patterns:</p>
                             <ul>
-                                <li><strong>× 1</strong> = The number stays the same (7 × 1 = 7)</li>
-                                <li><strong>× 2</strong> = Just double the number (6 × 2 = 12)</li>
-                                <li><strong>× 5</strong> = Always ends in 0 or 5 (4 × 5 = 20)</li>
-                                <li><strong>× 10</strong> = Add a zero to the end (8 × 10 = 80)</li>
+                                <li><strong>1 + 1</strong> = 2</li>
+                                <li><strong>2 + 2</strong> = 4</li>
+                                <li><strong>5 + 5</strong> = 10</li>
+                                <li><strong>10 + 10</strong> = 20</li>
                             </ul>
                         </div>
 
                         <div class="tip-box">
-                            <h3>🎵 Use Skip Counting</h3>
-                            <p>Practice counting by 3s, 4s, 6s, etc. This helps you memorize multiplication facts naturally:</p>
+                            <h3>🎵 Count On Strategy</h3>
+                            <p>Start with the bigger number and count up by the smaller number:</p>
                             <ul>
-                                <li><strong>Counting by 3s:</strong> 3, 6, 9, 12, 15, 18, 21, 24, 27, 30</li>
-                                <li><strong>Counting by 4s:</strong> 4, 8, 12, 16, 20, 24, 28, 32, 36, 40</li>
+                                <li><strong>7 + 3:</strong> Start at 7, count up: 8, 9, 10!</li>
+                                <li><strong>12 + 5:</strong> Start at 12, count up: 13, 14, 15, 16, 17!</li>
                             </ul>
                         </div>
 
                         <div class="tip-box">
-                            <h3>🧮 The Commutative Property</h3>
-                            <p>Remember: 3 × 4 is the same as 4 × 3! This cuts your memorization in half. If you know 6 × 7 = 42, then you automatically know 7 × 6 = 42.</p>
-                        </div>
-
-                        <div class="tip-box">
-                            <h3>✋ Use Your Fingers for 9s</h3>
-                            <p>Here's a cool trick for the 9 times table:</p>
+                            <h3>🧮 Making Ten</h3>
+                            <p>Break numbers to make 10 first, then add the rest. This makes larger numbers easier:</p>
                             <ul>
-                                <li>Hold both hands in front of you</li>
-                                <li>For 9 × 4, put down your 4th finger</li>
-                                <li>Count fingers: 3 before, 6 after = 36!</li>
+                                <li><strong>8 + 5:</strong> Think "8 + 2 = 10, then 10 + 3 = 13"</li>
+                                <li><strong>7 + 6:</strong> Think "7 + 3 = 10, then 10 + 3 = 13"</li>
                             </ul>
                         </div>
 
                         <div class="tip-box">
-                            <h3>🎯 Practice Daily</h3>
+                            <h3>✋ Use Your Fingers</h3>
+                            <p>For smaller numbers, fingers are a great tool:</p>
+                            <ul>
+                                <li>Put up fingers for the first number</li>
+                                <li>Add more fingers for the second number</li>
+                                <li>Count all your fingers for the answer!</li>
+                            </ul>
+                        </div>
+
+                        <div class="tip-box">
+                            <h3>🎯 Near Doubles</h3>
+                            <p>If you know your doubles, use them for numbers that are close:</p>
+                            <ul>
+                                <li><strong>6 + 7:</strong> Think "6 + 6 = 12, plus 1 more = 13"</li>
+                                <li><strong>8 + 9:</strong> Think "8 + 8 = 16, plus 1 more = 17"</li>
+                            </ul>
+                        </div>
+
+                        <div class="tip-box">
+                            <h3>🏆 Practice Daily</h3>
                             <p>Spend just 5-10 minutes each day practicing. Consistency is more important than long study sessions. Use this quiz to make practice fun and track your progress!</p>
-                        </div>
-
-                        <div class="tip-box">
-                            <h3>🏆 Build Speed Gradually</h3>
-                            <p>Start with accuracy, not speed. Once you can answer correctly every time, work on getting faster. This quiz's auto-advance feature helps you naturally build speed!</p>
                         </div>
                     </div>
                 </section>
@@ -214,22 +222,22 @@ include '../includes/header.php';
                     <h2 class="section-heading">Which Difficulty Should I Choose?</h2>
                     <div class="difficulty-guide">
                         <div class="guide-card easy-guide">
-                            <h3>⭐ Easy (1-5)</h3>
-                            <p><strong>Perfect for:</strong> Students just learning multiplication, kindergarten through 2nd grade.</p>
-                            <p><strong>You'll practice:</strong> Times tables 1 through 5</p>
-                            <p><strong>Example questions:</strong> 2 × 3, 4 × 5, 3 × 1</p>
+                            <h3>⭐ Easy (1-10)</h3>
+                            <p><strong>Perfect for:</strong> Students just learning addition, kindergarten through 2nd grade.</p>
+                            <p><strong>You'll practice:</strong> Adding numbers from 1 to 10</p>
+                            <p><strong>Example questions:</strong> 2 + 3, 4 + 5, 7 + 1</p>
                         </div>
                         <div class="guide-card medium-guide">
-                            <h3>🎯 Medium (1-10)</h3>
+                            <h3>🎯 Medium (1-50)</h3>
                             <p><strong>Perfect for:</strong> Students comfortable with basics, 3rd through 4th grade.</p>
-                            <p><strong>You'll practice:</strong> All times tables through 10</p>
-                            <p><strong>Example questions:</strong> 7 × 8, 6 × 9, 4 × 10</p>
+                            <p><strong>You'll practice:</strong> Adding numbers up to 50</p>
+                            <p><strong>Example questions:</strong> 17 + 28, 36 + 19, 24 + 31</p>
                         </div>
                         <div class="guide-card hard-guide">
-                            <h3>🏆 Hard (1-12)</h3>
-                            <p><strong>Perfect for:</strong> Advanced students mastering all facts, 5th through 6th grade.</p>
-                            <p><strong>You'll practice:</strong> Complete times tables including 11 and 12</p>
-                            <p><strong>Example questions:</strong> 11 × 8, 12 × 7, 9 × 12</p>
+                            <h3>🏆 Hard (1-100)</h3>
+                            <p><strong>Perfect for:</strong> Advanced students mastering larger numbers, 5th through 6th grade.</p>
+                            <p><strong>You'll practice:</strong> Adding numbers up to 100</p>
+                            <p><strong>Example questions:</strong> 67 + 84, 59 + 73, 88 + 96</p>
                         </div>
                     </div>
                 </section>
@@ -268,7 +276,7 @@ include '../includes/header.php';
     <!-- Pass data to JavaScript -->
     <script>
         const QUESTIONS_PER_QUIZ = <?php echo QUESTIONS_PER_QUIZ; ?>;
-        const BASE_URL = '/multiplication/';
+        const BASE_URL = '/addition/';
         let currentLevel = '<?php echo $current_level; ?>';
     </script>
     
